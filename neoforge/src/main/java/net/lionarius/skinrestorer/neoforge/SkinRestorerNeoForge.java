@@ -1,0 +1,30 @@
+package net.lionarius.skinrestorer.neoforge;
+
+import net.lionarius.skinrestorer.SkinRestorer;
+import net.lionarius.skinrestorer.compat.skinshuffle.SkinShuffleCompatibility;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
+
+@Mod(SkinRestorer.MOD_ID)
+@Mod.EventBusSubscriber(modid = SkinRestorer.MOD_ID)
+public final class SkinRestorerNeoForge {
+    
+    public SkinRestorerNeoForge() {
+        SkinRestorer.onInitialize();
+        
+        if (SkinShuffleCompatibility.shouldApply())
+            net.lionarius.skinrestorer.neoforge.compat.skinshuffle.SkinShuffleCompatibility.initialize();
+    }
+    
+    @SubscribeEvent
+    public static void onCommandRegister(RegisterCommandsEvent event) {
+        SkinRestorer.Events.onCommandRegister(event.getDispatcher());
+    }
+    
+    @SubscribeEvent
+    public static void onServerStarted(ServerStartedEvent event) {
+        SkinRestorer.Events.onServerStarted(event.getServer());
+    }
+}
